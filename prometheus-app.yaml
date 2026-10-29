@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-test
+  namespace: 
+  labels:
+    app: prometheus-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-test
+  template:
+    metadata:
+      labels:
+        app: prometheus-test
+    spec:
+      containers:
+      - image: nilebox/prometheus-example-app:latest
+        name: prometheus-test
+        ports:
+        - name: metrics
+          containerPort: 9153

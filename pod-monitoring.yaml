@@ -1,0 +1,14 @@
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: prometheus-test
+  namespace: 
+  labels:
+    app.kubernetes.io/name: prometheus-test
+spec:
+  selector:
+    matchLabels:
+      app: prometheus-test
+  endpoints:
+  - port: metrics
+    interval: 30s
