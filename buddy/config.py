@@ -5,26 +5,22 @@ from openai import Client
 load_dotenv()
 
 def get_secret(key: str, default: str = "") -> str:
-    # 1. Try environment variables (.env / OS)
     val = os.getenv(key)
     if val:
         return val
-    
-    # 2. Try Streamlit Secrets (for Streamlit Community Cloud)
     try:
         import streamlit as st
         if key in st.secrets:
             return str(st.secrets[key])
     except Exception:
         pass
-        
     return default
 
 NEBIUS_API_KEY = get_secret("NEBIUS_API_KEY")
 TAVILY_API_KEY = get_secret("TAVILY_API_KEY")
 MEMORY_FILE = get_secret("MEMORY_FILE", "memory.json")
 
-# Defaulting to a fast Llama 3.1 model available on Nebius
+# Updated to a known valid Nebius model ID
 MODEL = get_secret("MODEL", "meta-llama/Meta-Llama-3.1-8B-Instruct")
 
 def get_client():
@@ -32,7 +28,6 @@ def get_client():
     if not api_key:
         raise ValueError("NEBIUS_API_KEY is not set. Please set it in .env or Streamlit Secrets.")
     
-    # Use the OpenAI SDK to connect to the Nebius endpoint
     return Client(
         base_url="https://api.studio.nebius.ai/v1/",
         api_key=api_key
