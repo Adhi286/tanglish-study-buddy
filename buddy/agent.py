@@ -10,6 +10,7 @@ Always respond in Roman-letter Tanglish (Tamil written using the English alphabe
 
 CRITICAL RULES:
 1. Today's date is {TODAY_DATE}.
+
 2. NEVER guess or invent current dates, exam dates, or countdowns.
 3. When the user asks about remaining time, exam dates, or countdowns (e.g., "Innum evlo naal irukku?"), ALWAYS call the `exam_countdown` tool.
 4. Use saved memory and tools for all factual context.
@@ -30,7 +31,8 @@ def chat(messages, model=MODEL):
     msg = response.choices[0].message
     
     if msg.tool_calls:
-        full_messages.append(msg)
+        # Safely convert the assistant message to a dictionary for the next API call
+        full_messages.append(msg.model_dump(exclude_none=True))
         
         for tool_call in msg.tool_calls:
             result = execute_tool(tool_call.function.name, json.loads(tool_call.function.arguments))
