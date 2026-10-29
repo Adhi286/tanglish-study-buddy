@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from google import genai
+from openai import Client
 
 load_dotenv()
 
@@ -20,13 +20,20 @@ def get_secret(key: str, default: str = "") -> str:
         
     return default
 
-GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
+NEBIUS_API_KEY = get_secret("NEBIUS_API_KEY")
 TAVILY_API_KEY = get_secret("TAVILY_API_KEY")
 MEMORY_FILE = get_secret("MEMORY_FILE", "memory.json")
-MODEL = get_secret("MODEL", "gemini-2.5-flash")
+
+# Defaulting to a fast Llama 3.1 model available on Nebius
+MODEL = get_secret("MODEL", "meta-llama/Meta-Llama-3.1-8B-Instruct")
 
 def get_client():
-    api_key = get_secret("GEMINI_API_KEY")
+    api_key = get_secret("NEBIUS_API_KEY")
     if not api_key:
-        raise ValueError("GEMINI_API_KEY is not set. Please set it in .env or Streamlit Secrets.")
-    return genai.Client(api_key=api_key)
+        raise ValueError("NEBIUS_API_KEY is not set. Please set it in .env or Streamlit Secrets.")
+    
+    # Use the OpenAI SDK to connect to the Nebius endpoint
+    return Client(
+        base_url="https://api.studio.nebius.ai/v1/",
+        api_key=api_key
+    )
