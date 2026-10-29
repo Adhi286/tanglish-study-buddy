@@ -20,8 +20,8 @@ NEBIUS_API_KEY = get_secret("NEBIUS_API_KEY")
 TAVILY_API_KEY = get_secret("TAVILY_API_KEY")
 MEMORY_FILE = get_secret("MEMORY_FILE", "memory.json")
 
-# Updated to a known valid Nebius model ID
-MODEL = get_secret("MODEL", "meta-llama/Meta-Llama-3.1-8B-Instruct")
+# Updated to a valid and fast DeepSeek model from your list
+MODEL = get_secret("MODEL", "deepseek-ai/DeepSeek-V4.1-Flash")
 
 def get_client():
     api_key = get_secret("NEBIUS_API_KEY")
